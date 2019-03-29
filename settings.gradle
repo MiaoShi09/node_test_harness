@@ -1,0 +1,2 @@
+rootProject.name = 'node_test_harness'
+include "TestHarness", "Tests"

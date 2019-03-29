@@ -1,0 +1,41 @@
+plugins {
+    id 'java-library'
+}
+
+ext.moduleName = 'aion.node.harness'
+
+configurations {
+	integTestCompile.extendsFrom testCompile
+	integTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets { 
+    main { 
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src-resources']
+    }
+    test { 
+        java.srcDirs = ['test']
+        resources.srcDirs = ['test-resources']
+    }
+    integTest { 
+        java.srcDirs = ['integration-test']
+        resources.srcDirs = ['integration-test-resources']
+		compileClasspath += main.output + test.output
+		runtimeClasspath += main.output + test.output
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: ['*.jar'])
+}
+
+compileJava {
+    inputs.property("moduleName", moduleName)
+    doFirst {
+        options.compilerArgs = [
+            '--module-path', classpath.asPath,
+        ]
+        classpath = files()  
+    }
+}
