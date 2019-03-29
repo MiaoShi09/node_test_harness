@@ -29,13 +29,14 @@ public final class TransactionReceipt {
     private final Address deployedContractAddress;
     private final Address sender;
     private final Address destination;
+    private final int status;
 
     /**
      * Constructs a new transaction receipt from the specified parameters.
      */
     public TransactionReceipt(long energyPrice, long energyLimit, long energyConsumed, long cumulativeEnergyConsumed,
         int transactionIndex, byte[] blockHash, byte[] bloomFilter, byte[] transactionHash, byte[] stateRootHash,
-        BigInteger blockNumber, Address newContractAddress, Address sender, Address destination) {
+        BigInteger blockNumber, Address newContractAddress, Address sender, Address destination, int status) {
 
         this.energyPrice = energyPrice;
         this.energyLimit = energyLimit;
@@ -50,6 +51,7 @@ public final class TransactionReceipt {
         this.deployedContractAddress = newContractAddress;
         this.sender = sender;
         this.destination = destination;
+        this.status = status;
     }
 
     /**
@@ -194,7 +196,9 @@ public final class TransactionReceipt {
             + ", block number = " + this.blockNumber
             + ", deployed contract address = " + this.deployedContractAddress
             + ", transaction sender = " + this.sender
-            + ", transaction destination = " + this.destination + " }";
+            + ", transaction destination = " + this.destination
+            + ", status = " + this.status
+            + " }";
     }
 
     /**

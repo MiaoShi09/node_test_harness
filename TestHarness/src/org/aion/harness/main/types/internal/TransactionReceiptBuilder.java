@@ -42,6 +42,7 @@ public final class TransactionReceiptBuilder {
     private Address deployedContractAddress = null;
     private Address sender = null;
     private Address destination = null;
+    private int status = -1;
 
     /**
      * <b>Mandatory. This field must be set.</b>
@@ -53,6 +54,11 @@ public final class TransactionReceiptBuilder {
      */
     public TransactionReceiptBuilder transactionEnergyPrice(long energyPrice) {
         this.energyPrice = energyPrice;
+        return this;
+    }
+
+    public TransactionReceiptBuilder status(int status) {
+        this.status = status;
         return this;
     }
 
@@ -273,7 +279,8 @@ public final class TransactionReceiptBuilder {
             this.blockNumber,
             this.deployedContractAddress,
             this.sender,
-            this.destination
+            this.destination,
+            this.status
         );
     }
 
@@ -306,6 +313,7 @@ public final class TransactionReceiptBuilder {
         String sender = jsonParser.attributeToString("from");
         String contract = jsonParser.attributeToString("contractAddress");
         String destination = jsonParser.attributeToString("to");
+        String status = jsonParser.attributeToString("status");
 
         return new TransactionReceiptBuilder()
             .transactionEnergyPrice((energyPrice == null) ? -1 : Long.parseLong(energyPrice, 16))
@@ -321,6 +329,7 @@ public final class TransactionReceiptBuilder {
             .transactionSender((sender == null) ? null : new Address(Hex.decodeHex(sender)))
             .newlyDeployedContractAddress((contract == null) ? null : new Address(Hex.decodeHex(contract)))
             .transactionDestination((destination == null) ? null : new Address(Hex.decodeHex(destination)))
+            .status(status == null? -1: Integer.parseInt(status, 16))
             .build();
     }
 
