@@ -97,7 +97,7 @@ public class BulkBalanceTransferTest {
 
     @AfterClass
     public static void tearDownAfterAllTests() throws IOException {
-        destroyLogs();
+//        destroyLogs();
     }
 
     @Test
@@ -106,6 +106,8 @@ public class BulkBalanceTransferTest {
         List<BigInteger> amounts = randomAmounts(NUMBER_OF_TRANSACTIONS);
         BigInteger initialNonce = getPreminedNonce();
         BigInteger originalBalance = getPreminedBalance();
+
+        System.out.println("BulkBalanceTransferTest#testMixOfBalanceTransferTransactionsFromSameSender: originalBalance=" + originalBalance.toString());
 
         List<RawTransaction> transactions = buildRandomTransactionsFromSameSender(
             NUMBER_OF_TRANSACTIONS, recipients, amounts, initialNonce);
@@ -117,6 +119,9 @@ public class BulkBalanceTransferTest {
         BigInteger totalCost = totalEnergyCost.add(totalAmounts);
         BigInteger expectedBalance = originalBalance.subtract(totalCost);
 
+        System.out.println(String.format(
+            "BulkBalanceTransferTest#testMixOfBalanceTransferTransactionsFromSameSender: totalEnergyCost=%s, totalAmounts=%s, totalCost=%s, expectedBalance=%s",
+            totalEnergyCost, totalAmounts, totalCost, expectedBalance));
         assertEquals(expectedBalance, getPreminedBalance());
 
         // Verify that all the beneficiaries have received the expected amounts.
@@ -374,6 +379,15 @@ public class BulkBalanceTransferTest {
     }
 
     private RawTransaction buildTransaction(TransactionKind kind, PrivateKey sender, Address recipient, BigInteger amount, BigInteger nonce) throws DecoderException {
+        System.out.println(
+            String.format(
+                "BulkBalanceTransferTest#buildTransaction: kind=%s, sender=%s, recipient=%s, amount=%s, nonce=%s",
+                kind.toString(),
+                sender.toString(),
+                recipient.toString(),
+                amount.toString(),
+                nonce.toString()
+        ));
         switch (kind) {
             case REGULAR_TRANSFER: return buildTransactionToTransferToRegularAccount(sender, recipient, amount, nonce);
             case CREATE_AND_TRANSFER_FVM: return buildTransactionToCreateAndTransferToFvmContract(sender, amount, nonce);
