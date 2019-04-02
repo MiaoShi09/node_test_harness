@@ -70,10 +70,11 @@ public class BulkBalanceTransferTest {
         disclaimer();
         this.preminedPrivateKey = PrivateKey.fromBytes(Hex.decodeHex(PREMINED_KEY));
 
-        NodeConfigurations configurations = NodeConfigurations.alwaysUseBuiltKernel(Network.AVMTESTNET, BUILT_KERNEL, DatabaseOption.PRESERVE_DATABASE);
+        NodeConfigurations configurations = NodeConfigurations.alwaysUseBuiltKernel(Network.CUSTOM, BUILT_KERNEL, DatabaseOption.PRESERVE_DATABASE);
 
         this.node = NodeFactory.getNewLocalNodeInstance(NodeType.JAVA_NODE);
         this.node.configure(configurations);
+
         assertTrue(this.node.initialize().isSuccess());
         assertTrue(this.node.start().isSuccess());
         assertTrue(this.node.isAlive());

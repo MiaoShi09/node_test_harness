@@ -30,5 +30,24 @@ dependencies {
     testImplementation project(':TestHarness')
 }
 
-// make test target always run
-test.outputs.upToDateWhen {false}
+task copyCustomConfig(type: Copy) { 
+    if ( !project.file("aion").exists() || !project.file("aion").isDirectory() ) {
+        throw new GradleException("Can't override Aion kernel config because aion directory not present.");
+    }
+    from project.file("test_resources/custom")
+    into project.file("aion/custom")
+}
+
+task waitForPorts(type: Exec) { 
+    commandLine 'bash', "bin/wait-for-ports.sh"
+}
+
+task ciTest
+ciTest.dependsOn copyCustomConfig
+ciTest.dependsOn waitForPorts
+ciTest.dependsOn test
+
+test.mustRunAfter copyCustomConfig
+test.mustRunAfter waitForPorts
+test.outputs.upToDateWhen {false} // make test target always run even if source didn't change
+test { testResultsDirName = "${rootProject.projectDir}/report/FunctionalTests" }
