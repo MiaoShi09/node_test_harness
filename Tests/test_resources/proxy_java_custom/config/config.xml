@@ -25,7 +25,9 @@
 		<id>0</id>
         <nodes>
 		<!-- Place here the address(es) to P2p peers of the cluster under test -->
-		<node></node>
+			<node>p2p://55555555-e35f-4cf9-9234-65cea7558aa4@172.17.0.2:30303</node>
+			<node>p2p://99999999-e35f-4cf9-9234-65cea7558aa4@172.17.0.4:30303</node>
+
 	</nodes>
 		<p2p>
 			<ip>0.0.0.0</ip>

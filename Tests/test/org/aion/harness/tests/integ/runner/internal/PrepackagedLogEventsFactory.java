@@ -24,6 +24,7 @@ public class PrepackagedLogEventsFactory implements TestRule {
     private void setKernel(NodeType nodeType) {
         switch(nodeType) {
             case RUST_NODE:
+            case PROXY_RUST_NODE:
                 prepackagedLogEvents = new RustPrepackagedLogEvents();
                 break;
             case JAVA_NODE: 

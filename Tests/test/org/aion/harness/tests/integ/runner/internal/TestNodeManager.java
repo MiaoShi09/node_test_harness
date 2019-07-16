@@ -32,18 +32,27 @@ public final class TestNodeManager {
 
     public TestNodeManager(NodeType nodeType) {
         this.nodeType = nodeType;
-        if(nodeType == NodeType.RUST_NODE) {
-            this.expectedKernelLocation = WORKING_DIR + "/aionr";
-            this.handedwrittenConfigs = WORKING_DIR + "/test_resources/rust_custom";
-        } else if(nodeType == NodeType.JAVA_NODE) {
-            this.expectedKernelLocation = WORKING_DIR + "/aion";
-            this.handedwrittenConfigs = WORKING_DIR + "/test_resources/custom";
-        } else if(nodeType == NodeType.PROXY_JAVA_NODE) {
-            this.expectedKernelLocation = WORKING_DIR + "/aionproxy";
-            this.handedwrittenConfigs = WORKING_DIR + "/test_resources/proxy_java_custom";
-        } else {
-            throw new IllegalArgumentException("Unsupported kernel");
+        switch(nodeType){
+            case RUST_NODE:
+                this.expectedKernelLocation = WORKING_DIR + "/aionr";
+                this.handedwrittenConfigs = WORKING_DIR + "/test_resources/rust_custom";
+                break;
+            case JAVA_NODE:
+                this.expectedKernelLocation = WORKING_DIR + "/aion";
+                this.handedwrittenConfigs = WORKING_DIR + "/test_resources/custom";
+                break;
+            case PROXY_JAVA_NODE:
+                this.expectedKernelLocation = WORKING_DIR + "/aionproxy";
+                this.handedwrittenConfigs = WORKING_DIR + "/test_resources/proxy_java_custom";
+                break;
+            case PROXY_RUST_NODE:
+                this.expectedKernelLocation = WORKING_DIR + "/aionrproxy";
+                this.handedwrittenConfigs = WORKING_DIR + "/test_resources/proxy_rust_custom";
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported kernel");
         }
+
     }
 
     /**
@@ -124,7 +133,8 @@ public final class TestNodeManager {
     }
 
     private void overwriteConfigAndGenesis() throws IOException {
-        if(nodeType == NodeType.RUST_NODE) {
+        if(nodeType == NodeType.RUST_NODE
+            || nodeType == NodeType.PROXY_RUST_NODE) {
             overwriteIfTargetDirExists(new File(handedwrittenConfigs),
                 new File(expectedKernelLocation + "/custom"));
         } else if(nodeType == NodeType.JAVA_NODE

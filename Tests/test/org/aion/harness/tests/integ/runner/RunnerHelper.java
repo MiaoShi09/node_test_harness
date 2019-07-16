@@ -28,7 +28,8 @@ class RunnerHelper {
     private final static Map<String, NodeType> NODE_STRING_TO_ENUM = Map.ofEntries(
         Map.entry("java", NodeType.JAVA_NODE),
         Map.entry("rust", NodeType.RUST_NODE),
-        Map.entry("proxy", NodeType.PROXY_JAVA_NODE)
+        Map.entry("proxy", NodeType.PROXY_JAVA_NODE),
+        Map.entry("proxyr",NodeType.PROXY_RUST_NODE)
     );
 
     /** Default nodes to run with if {@code testNodes} property not supplied */
@@ -44,7 +45,7 @@ class RunnerHelper {
         if(null == propString || propString.isEmpty()) {
             String msg =
                 "Cannot start tests because the test node types have not been specified.  Set the\n" +
-                "Java system property testNodes (valid values: java, rust, proxy).\n" +
+                "Java system property testNodes (valid values: java, rust, proxy,proxyr).\n" +
                 "\n" +
                 "If running from Gradle, run the following to test Java node: ./gradlew Tests:test -PtestNodes=java\n" +
                 "If running from IDE, add the following VM argument to JUnit run execution: -DtestNodes=java\n";

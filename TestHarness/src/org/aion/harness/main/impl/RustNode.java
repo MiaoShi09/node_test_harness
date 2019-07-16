@@ -26,8 +26,8 @@ import org.apache.commons.io.filefilter.DirectoryFileFilter;
 public class RustNode implements LocalNode {
     private final SimpleLog log;
     private NodeConfigurations configurations;
-    private LogReader logReader;
-    private LogManager logManager;
+    protected LogReader logReader;
+    protected LogManager logManager;
     private final int ID;
     private boolean isInitialized;
 
@@ -150,9 +150,9 @@ public class RustNode implements LocalNode {
 
         ProcessBuilder builder = new ProcessBuilder("./aion",
             String.format("--config=%s", cfgFile),
-            "-d", DATA_DIR,
+            "-d", DATA_DIR //,
             // --author arg needed for aionr miner, but its value is not depended on by tests
-            "--author", "a0d6dec327f522f9c8d342921148a6c42f40a3ce45c1f56baa7bfa752200d9e5"
+           // "--author", "a0d6dec327f522f9c8d342921148a6c42f40a3ce45c1f56baa7bfa752200d9e5"
         ).directory(this.configurations.getActualBuildLocation());
         builder.environment().put("JAVA_HOME", System.getProperty("java.home"));
         builder.environment().put("LD_LIBRARY_PATH", ldLib);
@@ -168,7 +168,7 @@ public class RustNode implements LocalNode {
         }
 
         this.runningKernel = builder.start();
-        return waitForReadyOrError(this.logManager.getCurrentOutputLogFile());
+        return waitForKernelReadyOrError(this.logManager.getCurrentOutputLogFile());
     }
 
     @Override
@@ -254,7 +254,7 @@ public class RustNode implements LocalNode {
     /**
      * Block until logs indicate that either RPC server started or an error happened
      */
-    private Result waitForReadyOrError(File outputLog) throws InterruptedException {
+    protected Result waitForKernelReadyOrError(File outputLog) throws InterruptedException {
         // We wait for the rpc event to know we are ok to return. There is a chance that we will miss
         // this event and start listening too late. That is why we timeout after 20 seconds, which
         // should be more than sufficient for the server to activate, and then we check if the node

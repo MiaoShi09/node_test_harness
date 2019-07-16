@@ -175,7 +175,7 @@ public final class ConcurrentRunner extends Runner {
         TestAndResultQueueManager queueManager = new TestAndResultQueueManager(numThreads);
 
         final PreminedAccountFunder paf;
-        if(nt == NodeType.RUST_NODE) {
+        if(nt == NodeType.RUST_NODE || nt == NodeType.PROXY_RUST_NODE) {
             paf = new PreminedAccountFunder(testNodeManager, new RustPrepackagedLogEvents());
         } else if(nt == NodeType.JAVA_NODE || nt == NodeType.PROXY_JAVA_NODE) {
             paf = new PreminedAccountFunder(testNodeManager, new JavaPrepackagedLogEvents());
