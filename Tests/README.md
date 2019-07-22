@@ -3,7 +3,7 @@ This module is where we store all of the tests that _use_ the testing harness. T
 
 ## Aion kernel setup
 
-node_test_harness supports several _node types_, which represent the Aion implementation being tested.  The node type must be specified when running the tests by passing in Java system property `nodeTypes`.  For instance, if running with Gradle, to test against a Java kernel, the invocation is `./gradlew Tests:test -PnodeTypes=java`
+node_test_harness supports several _node types_, which represent the Aion implementation being tested.  The node type must be specified when running the tests by passing in Java system property `testNodes`.  For instance, if running with Gradle, to test against a Java kernel, the invocation is `./gradlew Tests:test -PtestNodes=java`
 
 The tests expect that a kernel be at a particular location (dependent on node type being tested), so this must be set up before running the tests.  For instance, for testing against Java, the expected kernel location is Tests/aion within the node_test_harness cloned repo.
 
@@ -14,7 +14,7 @@ The tests in this module have the ability to be incorporated into a test suite t
 
 __All tests should be written for concurrent testing unless there is a very good reason why they do not fit into the concurrent model!__
 
-In general, `./gradlew :Tests:test -PnodeTypes=<nodetype>` is how you should be running tests.  For Java kernel, use `java` as <nodetype>.  This will use the concurrent runner and execute the tests against the Java kernel; for changing the kernel-under-test, see [Node type configuration](#node-type-configuration).
+In general, `./gradlew :Tests:test -PtestNodes=<nodetype>` is how you should be running tests.  For Java kernel, use `java` as <nodetype>.  This will use the concurrent runner and execute the tests against the Java kernel; for changing the kernel-under-test, see [Node type configuration](#node-type-configuration).
 
 
 * [Concurrent Testing](#concurrent)
@@ -70,7 +70,7 @@ By default, running tests sequentially will cause the test to be run twice -- on
 
 ## Node type configuration
 
-Node type determines the Aion implementation that the tests will be executed against.  By default, node type is Java, but can be overridden using the system property `testNodes`.  If running tests from IDE, set the system property in your JUnit configuration.  If running tests via Gradle, set the property using the `-P` argument; i.e. `./gradlew Tests:test -PnodeType=java`.  Multiple node types can be provided, i.e. `./gradlew Tests:test -PnodeType=java,rust`.
+Node type determines the Aion implementation that the tests will be executed against.  By default, node type is Java, but can be overridden using the system property `testNodes`.  If running tests from IDE, set the system property in your JUnit configuration.  If running tests via Gradle, set the property using the `-P` argument; i.e. `./gradlew Tests:test -PtestNodes=java`.  Multiple node types can be provided, i.e. `./gradlew Tests:test -PtestNodes=java,rust`.
 
 Supported node types:
 

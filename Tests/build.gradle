@@ -5,11 +5,6 @@ plugins {
 targetCompatibility = 10
 sourceCompatibility = 10
 
-configurations { 
-    rustTestCompile.extendsFrom testImplementation
-    rustTestRuntime.extendsFrom testRuntime
-}
-
 sourceSets {
     main { 
         java.srcDirs = ['src']
@@ -18,13 +13,6 @@ sourceSets {
     test { 
         java.srcDirs = ['test']
         resources.srcDirs = ['test_resources']
-    }
-    rustTest { 
-        java {
-            srcDirs = ['test']
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-        }
     }
 }
 
@@ -41,39 +29,6 @@ dependencies {
     testImplementation fileTree(dir: '../TestHarness/lib', include: ['*.jar'])
 }
 
-
-task checkJavaKernelPresent { 
-    doLast { 
-        if ( !project.file("aion").exists() || !project.file("aion").isDirectory() ) {
-            throw new GradleException("Can't override Aion kernel config because aion directory not present.");
-        }
-    }
-}
-
-task checkRustKernelPresent { 
-    doLast { 
-        if ( !project.file("aionr").exists() || !project.file("aionr").isDirectory() ) {
-            throw new GradleException("Can't override AionR kernel config because aionr directory not present.");
-        }
-    }
-}
-
-task copyCustomConfigJava(type: Copy) { 
-    dependsOn checkJavaKernelPresent
-    from project.file("test_resources/custom")
-    into project.file("aion/custom")
-}
-
-task copyCustomConfigRust(type: Copy) {
-    dependsOn checkRustKernelPresent 
-    from project.file("test_resources/rust_custom")
-    into project.file("aionr/custom")
-}
-
-task waitForPorts(type: Exec) { 
-    commandLine 'bash', "bin/wait-for-ports.sh"
-}
-
 test {
 	if ( project.hasProperty("skipCleanLogs") ) {
 		systemProperty "skipCleanLogs", project.getProperty("skipCleanLogs")
@@ -88,27 +43,6 @@ test {
 	}
 }
 
-task ciTest
-ciTest.dependsOn copyCustomConfigJava
-ciTest.dependsOn waitForPorts
-ciTest.dependsOn test
-
 build.dependsOn.remove('check')  // don't run tests on 'build' task
-test.mustRunAfter copyCustomConfigJava
-test.mustRunAfter waitForPorts
 test.outputs.upToDateWhen {false} // make test target always run even if source didn't change
 test { testResultsDirName = "${rootProject.projectDir}/report/FunctionalTests" }
-
-// omit rust tests from :test and :ciTest
-test { 
-    exclude '**/integ/rust/**'
-}
-
-// set up a task that runs only rust tests
-task rustTest(type: Test) { 
-    testClassesDirs = sourceSets.rustTest.output.classesDirs
-    classpath = sourceSets.rustTest.runtimeClasspath
-    include '**/integ/rust/**' // run only rust tests
-    dependsOn copyCustomConfigRust
-    outputs.upToDateWhen {false} // make rustTest target always run even if source didn't change
-}   
