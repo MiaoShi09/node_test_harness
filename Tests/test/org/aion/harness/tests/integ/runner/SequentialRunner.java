@@ -56,8 +56,7 @@ public final class SequentialRunner extends Runner {
         this.testClass = testClass;
         nodeType2Description = new LinkedHashMap<>(); // because run method depends on the order
 
-        List<NodeType> nodesToTest = new LinkedList<>();
-        nodesToTest.removeAll(helper.determineExcludedNodeTypes(this.testClass.getAnnotations()));
+        List<NodeType> nodesToTest = new LinkedList<>(helper.determineNodeTypes());
 
         this.testClassDescription = deriveTestDescription(testClass, nodeType2Description, nodesToTest);
     }
