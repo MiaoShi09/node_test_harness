@@ -157,6 +157,7 @@ public class RustNode implements LocalNode {
         builder.environment().put("JAVA_HOME", System.getProperty("java.home"));
         builder.environment().put("LD_LIBRARY_PATH", ldLib);
         builder.environment().put("AIONR_HOME", ".");
+        builder.environment().put("RUST_BACKTRACE","1");
 
         builder.redirectErrorStream(true);
         builder.redirectOutput(this.logManager.getCurrentOutputLogFile());
