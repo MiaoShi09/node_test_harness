@@ -1,4 +1,4 @@
-package org.aion.harness.tests.integ.concurrent;
+ package org.aion.harness.tests.integ.concurrent;
 
 import org.aion.harness.tests.integ.AlternatingVmTest;
 import org.aion.harness.tests.integ.AvmFailuresTest;
@@ -22,10 +22,10 @@ import org.junit.runners.Suite;
     BulkBalanceTransferTest.class,
     AvmTxSmokeTest.class,
     FvmTxSmokeTest.class,
-    JavaApiSmokeTest.class
+   // JavaApiSmokeTest.class
     , AvmFailuresTest.class
     , AlternatingVmTest.class
-    , RemovedStorageTest.class
+    //, RemovedStorageTest.class
     , AvmReceiptLogTest.class
     , InternalTxTest.class
 })
