@@ -22,12 +22,12 @@ import org.junit.runners.Suite;
     BulkBalanceTransferTest.class,
     AvmTxSmokeTest.class,
     FvmTxSmokeTest.class,
-   // JavaApiSmokeTest.class
-    , AvmFailuresTest.class
-    , AlternatingVmTest.class
-    //, RemovedStorageTest.class
-    , AvmReceiptLogTest.class
-    , InternalTxTest.class
+   // JavaApiSmokeTest.class,
+    AvmFailuresTest.class,
+    AlternatingVmTest.class,
+    // RemovedStorageTest.class,
+    AvmReceiptLogTest.class,
+    InternalTxTest.class
 })
 public class ConcurrentSuite {
     /**
